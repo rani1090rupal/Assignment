@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Loan Calculator</title>
+ <style>
+
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+ label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            margin-bottom: 10px;
+        }
+    </style>
+
+    <script>
+        function calculateLoan() {
+           
+            var employeeID = document.getElementById('employeeID').value;
+            var name = document.getElementById('name').value;
+            var address = document.getElementById('address').value;
+            var designation = document.getElementById('designation').value;
+            var loanAmount = parseFloat(document.getElementById('loanAmount').value);
+            var loanDate = new Date(document.getElementById('loanDate').value);
+            var interestRate = calculateInterestRate(designation);
+            
+          
+            if (employeeID.length < 4 || !employeeID.startsWith('E')) {
+                alert('Invalid Employee ID. It must be at least four characters and start with "E".');
+                return;
+            }
+
+            
+            var maturityDate = calculateMaturityDate(loanDate);
+            var totalInterest = loanAmount * interestRate;
+            var totalAmountPayable = loanAmount + totalInterest;
+
+           
+            alert('Employee ID: ' + employeeID +
+                  '\nName: ' + name +
+                  '\nAddress: ' + address +
+                  '\nDesignation: ' + designation +
+                  '\nLoan Amount: $' + loanAmount.toFixed(2) +
+                  '\nInterest Rate: ' + (interestRate * 100) + '%' +
+                  '\nTotal Interest: $' + totalInterest.toFixed(2) +
+                  '\nTotal Amount Payable: $' + totalAmountPayable.toFixed(2) +
+                  '\nMaturity Date: ' + maturityDate.toDateString());
+        }
+
+        function calculateInterestRate(designation) {  
+
+	switch (designation.toLowerCase()) {
+                case 'manager':
+                    return 0.07; // 7% interest rate for managers
+                case 'employee':
+                    return 0.05; // 5% interest rate for regular employees
+                default:
+                    return 0.06; // 6% interest rate for other designations
+            
+
+           }
+        }
+
+        function calculateMaturityDate(loanDate) {
+            
+            var maturityDate = new Date(loanDate);
+            maturityDate.setMonth(maturityDate.getMonth() + 12); 
+            return maturityDate;
+        }
+    </script>
+</head>
+<body>
+    <h1>Employee Loan Calculator</h1>
+    <form>
+        <label for="employeeID">Employee ID:</label>
+        <input type="text" id="employeeID" required><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" required><br>
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" required><br>
+
+        <label for="designation">Designation:</label>
+        <input type="text" id="designation" required><br>
+
+        <label for="loanAmount">Loan Amount:</label>
+        <input type="number" id="loanAmount" required><br>
+
+        <label for="loanDate">Date of Loan Taken:</label>
+         <input type="datetime-local" id="loanDate" required><br>
+
+        <label for="interest">Interest:</label>
+        <input type="text" id="interestRate" required><br>
+
+        <label for="maturitydate">Maturity Date:</label>
+        <input type="datetime-local" id="maturityDate" required><br>
+        
+        <button type="button" onclick="calculateLoan()">Calculate Loan</button>
+    </form>
+</body>
+</html>
